@@ -1374,6 +1374,8 @@ void CB2_LinkError(void)
 {
     u8 *tilemapBuffer;
 
+    gFieldCallback = NULL;
+
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     m4aMPlayStop(&gMPlayInfo_SE1);
     m4aMPlayStop(&gMPlayInfo_SE2);

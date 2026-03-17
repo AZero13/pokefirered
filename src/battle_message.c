@@ -1789,10 +1789,8 @@ static const u8 *TryGetStatusString(u8 *src)
     u8 *statusPtr;
 
     statusPtr = status;
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < 8 && *src != EOS; i++)
     {
-        if (*src == EOS)
-            break;
         *statusPtr = *src;
         src++;
         statusPtr++;

@@ -338,8 +338,8 @@ static const struct MenuAction sMultichoiceList_TradeCenter_Colosseum[] = {
 };
 
 static const struct MenuAction sMultichoiceList_Link_Wireless[] = {
-    { gText_GameLinkCable },
     { gText_Wireless },
+    { gText_GameLinkCable },
     { gOtherText_Exit }
 };
 

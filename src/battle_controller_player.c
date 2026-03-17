@@ -819,23 +819,22 @@ static void SetLinkBattleEndCallbacks(void)
 
 void SetBattleEndCallbacks(void)
 {
-    if (!gPaletteFade.active)
+    if (gBattleTypeFlags & BATTLE_TYPE_LINK)
     {
-        if (gBattleTypeFlags & BATTLE_TYPE_LINK)
-        {
-            if (gWirelessCommType == 0)
-                SetCloseLinkCallback();
-            else
-                SetLinkStandbyCallback();
-            gBattlerControllerFuncs[gActiveBattler] = SetLinkBattleEndCallbacks;
-        }
+        if (!IsLinkTaskFinished() || gPaletteFade.active)
+            return;
+        if (gWirelessCommType == 0)
+            SetCloseLinkCallback();
         else
-        {
-            m4aSongNumStop(SE_LOW_HEALTH);
-            gMain.inBattle = FALSE;
-            gMain.callback1 = gPreBattleCallback1;
-            SetMainCallback2(gMain.savedCallback);
-        }
+            SetLinkStandbyCallback();
+        gBattlerControllerFuncs[gActiveBattler] = SetLinkBattleEndCallbacks;
+    }
+    else if (!gPaletteFade.active)
+    {
+        m4aSongNumStop(SE_LOW_HEALTH);
+        gMain.inBattle = FALSE;
+        gMain.callback1 = gPreBattleCallback1;
+        SetMainCallback2(gMain.savedCallback);
     }
 }
 

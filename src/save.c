@@ -872,6 +872,8 @@ void Task_LinkFullSave(u8 taskId)
         gTasks[taskId].data[0] = 1;
         break;
     case 1:
+        if (!IsLinkTaskFinished())
+            break;
         SetLinkStandbyCallback();
         gTasks[taskId].data[0] = 2;
         break;
@@ -905,6 +907,7 @@ void Task_LinkFullSave(u8 taskId)
         gTasks[taskId].data[0] = 7;
         break;
     case 7:
+    if (!IsLinkTaskFinished()) break;
         ClearContinueGameWarpStatus2();
         SetLinkStandbyCallback();
         gTasks[taskId].data[0] = 8;
@@ -917,6 +920,7 @@ void Task_LinkFullSave(u8 taskId)
         }
         break;
     case 9:
+    if (!IsLinkTaskFinished()) break;
         SetLinkStandbyCallback();
         gTasks[taskId].data[0] = 10;
         break;

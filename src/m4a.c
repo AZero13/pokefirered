@@ -598,8 +598,6 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
     {
         mplayInfo->MPlayMainNext = soundInfo->MPlayMainHead;
         mplayInfo->musicPlayerNext = soundInfo->musicPlayerHead;
-        // NULL assignment semantically useless, but required for match
-        soundInfo->MPlayMainHead = NULL;
     }
 
     soundInfo->musicPlayerHead = mplayInfo;
@@ -1512,7 +1510,7 @@ void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *trac
 cond_true:
     {
         // *& is required for matching
-        (*&gMPlayJumpTable[1])(mplayInfo, track);
+        (gMPlayJumpTable[1])(mplayInfo, track);
         return;
     }
 

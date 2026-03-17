@@ -5,7 +5,9 @@
 #include "overworld.h"
 #include "hall_of_fame.h"
 #include "load_save.h"
+#include "item.h"
 #include "constants/heal_locations.h"
+#include "constants/items.h"
 
 bool8 EnterHallOfFame(void)
 {
@@ -46,6 +48,15 @@ bool8 EnterHallOfFame(void)
     {
         IncrementGameStat(GAME_STAT_RECEIVED_RIBBONS);
         FlagSet(FLAG_SYS_RIBBON_GET);
+        if (!CheckBagHasItem(ITEM_AURORA_TICKET, 1))
+        {
+             AddBagItem(ITEM_AURORA_TICKET, 1);
+             FlagSet(FLAG_ENABLE_SHIP_BIRTH_ISLAND);
+             FlagSet(FLAG_RECEIVED_AURORA_TICKET);
+             AddBagItem(ITEM_MYSTIC_TICKET, 1);
+             FlagSet(FLAG_ENABLE_SHIP_NAVEL_ROCK);
+             FlagSet(FLAG_RECEIVED_MYSTIC_TICKET);
+        }
     }
     SetMainCallback2(CB2_DoHallOfFameScreen);
     return FALSE;

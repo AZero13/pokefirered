@@ -32,7 +32,7 @@ const u8 gGameLanguage = GAME_LANGUAGE;
 const char BuildDateTime[] = __DATE__ " " __TIME__;
 #else
 #if REVISION == 0
-const char BuildDateTime[] = "2004 04 26 11:20";
+const char BuildDateTime[] = "2025 12 19 15:38 22afedd9";
 #else
 const char BuildDateTime[] = "2004 07 20 09:30";
 #endif //REVISION
@@ -279,7 +279,7 @@ static void ReadKeys(void)
     // because it compares the raw key input with the remapped held keys.
     // Note that newAndRepeatedKeys is never remapped either.
 
-    if (keyInput != 0 && gMain.heldKeys == keyInput)
+    if (keyInput != 0 && gMain.heldKeysRaw == keyInput)
     {
         gMain.keyRepeatCounter--;
 
@@ -460,7 +460,7 @@ void DoSoftReset(void)
     DmaStop(1);
     DmaStop(2);
     DmaStop(3);
-    SoftReset(RESET_ALL & ~RESET_SIO_REGS);
+    SoftReset(RESET_ALL ^ RESET_SIO_REGS);
 }
 
 void ClearPokemonCrySongs(void)

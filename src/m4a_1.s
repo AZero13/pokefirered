@@ -675,8 +675,7 @@ SoundMainRAM_Unk2:
 	cmp r0, r1
 	beq _081DD594
 	str r0, [r4, o_SoundChannel_xpi]
-	mov r1, 0x21
-	mul r2, r1, r0
+	ADD r2, r0, r0, LSL #5
 	ldr r1, [r4, o_SoundChannel_wav]
 	add r2, r2, r1
 	add r2, r2, 0x10
@@ -1153,7 +1152,7 @@ _081DD840:
 	adds r7, r0, 0
 	ldr r0, [r7, o_MusicPlayerInfo_status]
 	cmp r0, 0
-	bge _081DD858
+	bpl _081DD858
 	b _081DDA6C
 _081DD858:
 	ldr r0, lt2_SOUND_INFO_PTR
@@ -1163,7 +1162,7 @@ _081DD858:
 	bl FadeOutBody
 	ldr r0, [r7, o_MusicPlayerInfo_status]
 	cmp r0, 0
-	bge _081DD86C
+	bpl _081DD86C
 	b _081DDA6C
 _081DD86C:
 	ldrh r0, [r7, o_MusicPlayerInfo_tempoC]

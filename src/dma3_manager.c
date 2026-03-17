@@ -111,10 +111,7 @@ s16 RequestDma3Copy(const void *src, void *dest, u16 size, u8 mode)
             gDma3ManagerLocked = FALSE;
             return (s16)cursor;
         }
-        if(++cursor >= 0x80) // loop back to start.
-        {
-            cursor = 0;
-        }
+        cursor = (cursor + 1) & 0x7F;
         if(++var >= 0x80) // max checks were made. all resulted in failure.
         {
             break;
@@ -149,10 +146,7 @@ s16 RequestDma3Fill(s32 value, void *dest, u16 size, u8 mode)
             gDma3ManagerLocked = FALSE;
             return (s16)cursor;
         }
-        if(++cursor >= 0x80) // loop back to start.
-        {
-            cursor = 0;
-        }
+        cursor = (cursor + 1) & 0x7F;
         if(++var >= 0x80) // max checks were made. all resulted in failure.
         {
             break;

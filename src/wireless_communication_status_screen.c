@@ -143,13 +143,13 @@ static const u8 sActivityGroupInfo[][3] = {
     {ACTIVITY_TRADE,                          GROUPTYPE_TRADE,  2},
     {ACTIVITY_WONDER_CARD,                    GROUPTYPE_TOTAL,  2},
     {ACTIVITY_WONDER_NEWS,                    GROUPTYPE_TOTAL,  2},
-    {ACTIVITY_POKEMON_JUMP,                   NUM_GROUPTYPES,   0},
-    {ACTIVITY_BERRY_CRUSH,                    NUM_GROUPTYPES,   0},
-    {ACTIVITY_BERRY_PICK,                     NUM_GROUPTYPES,   0},
+    {ACTIVITY_POKEMON_JUMP,                   GROUPTYPE_TOTAL,   0},
+    {ACTIVITY_BERRY_CRUSH,                    GROUPTYPE_TOTAL,   0},
+    {ACTIVITY_BERRY_PICK,                     GROUPTYPE_TOTAL,   0},
     {ACTIVITY_SEARCH,                         GROUPTYPE_NONE,   0},
     {ACTIVITY_SPIN_TRADE,                     GROUPTYPE_TRADE,  0},
     {ACTIVITY_ITEM_TRADE,                     GROUPTYPE_NONE,   0},
-    {ACTIVITY_RECORD_CORNER,                  NUM_GROUPTYPES,   0},
+    {ACTIVITY_RECORD_CORNER,                  GROUPTYPE_TOTAL,   0},
     {ACTIVITY_BERRY_BLENDER,                  GROUPTYPE_NONE,   0},
     {ACTIVITY_NONE | IN_UNION_ROOM,           GROUPTYPE_UNION,  1},
     {ACTIVITY_BATTLE_SINGLE | IN_UNION_ROOM,  GROUPTYPE_UNION,  2},
@@ -418,16 +418,18 @@ static bool32 HaveCountsChanged(const u32 * curCounts, const u32 * prevCounts)
     return FALSE;
 }
 
-static bool32 UpdateCommunicationCounts(u32 * groupCounts, u32 * prevGroupCounts, u32 * activities, u8 taskId)
+static bool32 UpdateCommunicationCounts(
+    u32 *groupCounts, u32 *prevGroupCounts, u32 *activities, u8 taskId)
 {
     bool32 activitiesUpdated = FALSE;
-    u32 groupCountBuffer[NUM_GROUPTYPES] = {0, 0, 0, 0};
-    struct WirelessLink_Group * group = (void *)gTasks[taskId].data;
+    u32 groupCountBuffer[NUM_GROUPTYPES] = { 0, 0, 0, 0 };
+    struct WirelessLink_Group *group = (void *)gTasks[taskId].data;
     s32 i;
 
     for (i = 0; i < NUM_TASK_DATA; i++)
     {
-        u32 activity = CountPlayersInGroupAndGetActivity(&group->playerList->players[i], groupCountBuffer);
+        u32 activity =
+            CountPlayersInGroupAndGetActivity(&group->playerList->players[i], groupCountBuffer);
         if (activity != activities[i])
         {
             activities[i] = activity;
@@ -435,23 +437,18 @@ static bool32 UpdateCommunicationCounts(u32 * groupCounts, u32 * prevGroupCounts
         }
     }
 
-    if (!HaveCountsChanged(groupCountBuffer, prevGroupCounts))
+    if (HaveCountsChanged(groupCountBuffer, prevGroupCounts))
     {
-        if (activitiesUpdated == TRUE)
-            return TRUE;
-        else
-            return FALSE;
-    }
 
-    memcpy(groupCounts,     groupCountBuffer, sizeof(groupCountBuffer));
-    memcpy(prevGroupCounts, groupCountBuffer, sizeof(groupCountBuffer));
-    
-    groupCounts[GROUPTYPE_TOTAL] = groupCounts[GROUPTYPE_TRADE]
-                                 + groupCounts[GROUPTYPE_BATTLE]
-                                 + groupCounts[GROUPTYPE_UNION]
-                            #ifdef BUGFIX
-                                 + groupCounts[GROUPTYPE_TOTAL] // Missing count for activities not in above groups
-                            #endif
-                                 ;
-    return TRUE;
+        memcpy(groupCounts, groupCountBuffer, sizeof(groupCountBuffer));
+        memcpy(prevGroupCounts, groupCountBuffer, sizeof(groupCountBuffer));
+
+        groupCounts[GROUPTYPE_TOTAL] =
+            groupCounts[GROUPTYPE_TRADE] + groupCounts[GROUPTYPE_BATTLE] +
+            groupCounts[GROUPTYPE_UNION] +
+            groupCounts[GROUPTYPE_TOTAL] // Missing count for activities not in above groups
+            ;
+        activitiesUpdated = TRUE;
+    }
+    return activitiesUpdated;
 }
