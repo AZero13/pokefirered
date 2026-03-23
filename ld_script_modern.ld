@@ -27,6 +27,7 @@ SECTIONS {
         *(.bss*);
         /* .bss.code starts at 0x3001AA8 */
         src/m4a.o(.bss.code);
+        SORT_BY_NAME(src/m4a.o(common_data.*));
 
         /* COMMON starts at 0x30022A8 */
         *(COMMON);
