@@ -38,7 +38,7 @@ SECTIONS {
 
         /* COMMON starts at 0x30030E0 */
         INCLUDE "sym_common_rev10.ld"
-        SORT_BY_NAME(src/m4a.o(common_data.*));
+        src/m4a.o(SORT_BY_NAME(common_data.*));
         src/*.o(COMMON);
 
         *libc.a:sbrkr.o(COMMON);
